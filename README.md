@@ -1,13 +1,17 @@
 #Annoncement_ranks
 
-This mods is a mod that adds ranks and a command to make announcements.
+This mods is a mod that adds ranks and a command to make announcements. 
+This mod works with privileges. A privilege = a rank:
 
-Here are the different ranks:
+Privilege Name = Rank name
 
-    Admin
-    Moderator
-    Developer
-    Builder
-    Contributor
-    VIP
-    Player
+    server = Admin
+    moderator = Moderator
+    developer = Developer
+    builder = Builder
+    contributor = Contributor
+    vip = VIP
+    player = Player
+
+To add or modify ranks look in the "Readme.md". 
+Github: https://github.com/Salzar-R2D2/StaffRanks
