@@ -1,7 +1,0 @@
-color_admin = "#ba0000"
-color_moderator = "#1a75ff"
-color_developer = "#0099cc"
-color_builder = "#ffad33"
-color_contributor = "#a300cc"
-color_vip = "#00e600"
-color_player = "#ccccff"
