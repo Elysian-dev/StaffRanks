@@ -6,7 +6,7 @@ minetest.register_on_chat_message(function(name, message)
 	local privs = minetest.get_player_privs(name)
 		if privs.server then 
 			minetest.log("action", "[ADMIN]: <" .. name .. "> " .. message)
-		minetest.chat_send_all(minetest.colorize(color_admin,"[Administrateur] ").. minetest.colorize("white","<".. name .."> ") .. message)
+		minetest.chat_send_all(minetest.colorize(color_admin,"[Administrator] ").. minetest.colorize("white","<".. name .."> ") .. message)
 
     return true
 	end
@@ -17,7 +17,7 @@ end)
         local privs = minetest.get_player_privs(name)
         if privs.server then
             player:set_nametag_attributes({
-                text = (minetest.colorize(color_admin,"[Administrateur] ")..name),
+                text = (minetest.colorize(color_admin,"[Administrator] ")..name),
             })
         end
     end
@@ -59,7 +59,7 @@ end)
         local privs = minetest.get_player_privs(name)
         if privs.moderator then
             player:set_nametag_attributes({
-                text = (minetest.colorize(color_moderator,"[Modérateur] ")..name),
+                text = (minetest.colorize(color_moderator,"[Moderateur] ")..name),
             })
         end
     end
@@ -100,7 +100,7 @@ end)
 
 minetest.register_on_chat_message(function(name, message)
 	local privs = minetest.get_player_privs(name)
-		if privs.developper then
+		if privs.developer then
 			minetest.log("action", "[DEVELOPER]: <" .. name .. "> " .. message)
 		minetest.chat_send_all(minetest.colorize(color_developer,"[Developer] ").. minetest.colorize("white","<".. name .."> ") .. message)
 
@@ -113,7 +113,7 @@ end)
         local privs = minetest.get_player_privs(name)
         if privs.developer then
             player:set_nametag_attributes({
-                text = (minetest.colorize(color_developer,"[Developper] ")..name),
+                text = (minetest.colorize(color_developer,"[Developer] ")..name),
             })
         end
     end
