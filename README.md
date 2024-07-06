@@ -1,22 +1,34 @@
-#StaffRanks
+### Staffranks -- By Salzar
 
-This mods is a mod that adds ranks.
-This mod works with privileges. A privilege = a rank:
+This mod adds ranks, in chat and in nametag.
 
-Privilege Name = Rank name
 
-    server = Admin
-    moderator = Moderator
-    developer = Developer
-    builder = Builder
-    contributor = Contributor
-    vip = VIP
-    player = Player
+# Base ranks
 
-Github: https://github.com/Salzar-R2D2/StaffRanks
+All ranks can be found in ranks.lua.
 
--- Changes
-- To change the color of a row, simply add a "color_" in the color.lua followed by the color 
-you want (The color must be in Html (With a #))
-- To add a rank you just have to copy paste the code of the rank example, 
-in the file "example.lua", and to modify at your will what is written between "<>".
+* Administrator
+* Moderator
+* Developer
+* Builder
+* Contributor
+* VIP
+
+# Commands
+
+* `/add_rank <name> <rankname>` - Add a rank to player. If the rank name is 'clear', it resets the player's role.
+* `/ranks_list` - See the list of all ranks.
+* `/view_rank <name>` - View a player's rank.
+
+# Customization
+
+If you want to modify existing ranks or create new ones, simply use the staffranks.register_role() function and add the rank name, prefix and color.
+
+# API
+
+* `staffranks.register_role(name, prefix, color)` - Registers a rank, with its name, prefix and color.
+* `staffranks.role_exist(rankname)` - Check that the rank exists.
+* `staffranks.add_rank(name, rankname)` - Adds a specific rank to a player.
+* `staffranks.set_nametag(player)` - Set a player's nametag.
+* `staffranks.clear_nametag` - Remove a player's nametag.
+* `staffranks.rankslist()` - Displays the list of ranks

@@ -1,49 +1,114 @@
-local ranks = {
-    admin = {color = "#ba0000", privilege = "server", name = "Administrator"},
-    moderator = {color = "#1a75ff", privilege = "moderator", name = "Moderator"},
-    developer = {color = "#0099cc", privilege = "developer", name = "Developer"},
-    builder = {color = "#ffad33", privilege = "builder", name = "Builder"},
-    contributor = {color = "#a300cc", privilege = "contributor", name = "Contributor"},
-    vip = {color = "#00e600", privilege = "vip", name = "VIP"},
-    player = {color = "#ccccff", privilege = nil, name = "Player"}
-}
+dofile(minetest.get_modpath("staffranks") .. "/api.lua")
+dofile(minetest.get_modpath("staffranks") .. "/ranks.lua")
 
-local function onChatMessage(name, message, rank)
-    local privs = minetest.get_player_privs(name)
-    if privs[rank.privilege] then
-        minetest.log("action", "[" .. rank.name .. "]: <" .. name .. "> " .. message)
-        minetest.chat_send_all(minetest.colorize(rank.color, "[" .. rank.name .. "] ") .. minetest.colorize("white", "<" .. name .. "> ") .. message)
-        return true
-    end
-end
+minetest.register_chatcommand("add_rank", {
+	description = "Add a rank to player. If the rank name is 'clear', it resets the player's rank. See /ranks_list to view all available ranks.",
+	params = "<name> <rankname>",
+	privs = {},
+	func = function(name, param)
+		local player_name, rankname = param:split(" ")[1], param:split(" ")[2]
+		local player = minetest.get_player_by_name(player_name)
+		if player then
+			local meta = player:get_meta()
+			local rank = meta:get_string("staffranks:rank")
+			if rankname == "clear" then
+				if rank ~= "None" then
+					meta:set_string("staffranks:rank", "None")
+					meta:set_string("staffranks:rank_color", "None")
+					staffranks.clear_nametag(player)
+					minetest.chat_send_player(name,
+						minetest.colorize("#8dff23", "[StaffRanks] ") ..
+						minetest.colorize("#b7ff74", player_name .. "'s rank has been reinisialised."))
+				else
+					minetest.chat_send_player(name,
+						minetest.colorize("#FF0F0F", "[Error] ") ..
+						minetest.colorize("#FF4040", "The player " .. player_name .. " has no rank."))
+				end
+			else
+				if staffranks.rank_exist(rankname) then
+					staffranks.add_rank(player_name, rankname)
+					staffranks.set_nametag(player, rankname)
+					minetest.chat_send_player(name,
+						minetest.colorize("#8dff23", "[StaffRanks] ") ..
+						minetest.colorize("#b7ff74", player_name .. "'s rank has been set to " .. rankname .. "."))
+				else
+					minetest.chat_send_player(name,
+						minetest.colorize("#FF0F0F", "[Error] ") ..
+						minetest.colorize("#FF4040", "The " .. rankname .. " rank does not exist."))
+				end
+			end
+		elseif not minetest.player_exists(player_name) then
+			minetest.chat_send_player(name,
+						minetest.colorize("#FF0F0F", "[Error] ") ..
+						minetest.colorize("#FF4040", "The player " .. player_name .. " doesn't exist."))
+		elseif not player then
+			minetest.chat_send_player(name,
+						minetest.colorize("#FF0F0F", "[Error] ") ..
+						minetest.colorize("#FF4040", "The player " .. player_name .. " is not connected."))
+		end
+	end,
+})
 
-local function onJoinPlayer(player, rank)
-    local name = player:get_player_name()
-    local privs = minetest.get_player_privs(name)
-    if privs[rank.privilege] then
-        player:set_nametag_attributes({
-            text = (minetest.colorize(rank.color, "[" .. rank.name .. "] ") .. name),
-        })
-        for key, _ in pairs(privs) do
-            if key ~= rank.privilege then
-                privs[key] = nil
-            end
-        end
-        minetest.set_player_privs(name, privs)
-    end
-end
+minetest.register_chatcommand("ranks_list", {
+	description = "See the list of all ranks.",
+	privs = {},
+	func = function(name, param)
+		minetest.chat_send_player(name, "List of all ranks: " .. staffranks.rankslist())
+	end,
+})
 
-for rankName, rankData in pairs(ranks) do
-    minetest.register_privilege(rankName, {
-        description = "This player is a " .. rankData.name,
-        give_to_singleplayer = false
-    })
+minetest.register_chatcommand("view_rank", {
+	description = "View a player's rank.",
+	params = "<name>",
+	privs = {},
+	func = function(name, param)
+		local player = minetest.get_player_by_name(param)
+		if player then
+			local meta = player:get_meta()
+			local rank = meta:get_string("staffranks:rank")
+			if rank ~= "None" then
+				minetest.chat_send_player(name,
+								minetest.colorize("#8dff23", "[StaffRanks] ") ..
+								minetest.colorize("#b7ff74", "The player " .. param .. " has the rank " .. rank .. "."))
+			else
+				minetest.chat_send_player(name,
+								minetest.colorize("#8dff23", "[StaffRanks] ") ..
+								minetest.colorize("#b7ff74", "The player " .. param .. " has no rank."))
+			end
+		elseif not minetest.player_exists(param) then
+			minetest.chat_send_player(name,
+						minetest.colorize("#FF0F0F", "[Error] ") ..
+						minetest.colorize("#FF4040", "The player " .. param .. " doesn't exist."))
+		elseif not player then
+			minetest.chat_send_player(name,
+						minetest.colorize("#FF0F0F", "[Error] ") ..
+						minetest.colorize("#FF4040", "The player " .. param .. " is not connected."))
+		end
+	end,
+})
 
-    minetest.register_on_chat_message(function(name, message)
-        return onChatMessage(name, message, rankData)
-    end)
+minetest.register_on_joinplayer(function(player)
+	local meta = player:get_meta()
+	local rankname = meta:get_string("staffranks:rank")
+	if rankname ~= "None" then
+		staffranks.set_nametag(player)
+		return true
+	end
+end)
 
-    minetest.register_on_joinplayer(function(player)
-        onJoinPlayer(player, rankData)
-    end)
-end
+minetest.register_on_chat_message(function(name, message)
+	local player = minetest.get_player_by_name(name)
+	local meta = player:get_meta()
+	local rankname = meta:get_string("staffranks:rank")
+	local rank_color = meta:get_string("staffranks:rank_color")
+	if rankname ~= "None" then
+			minetest.chat_send_all(minetest.colorize(rank_color, "[" .. rankname .. "] ") .. name .. " > " .. message)
+			return true
+	end
+end)
+
+minetest.register_on_newplayer(function(player)
+	local meta = player:get_meta()
+	meta:set_string("staffranks:rank", "None")
+	meta:set_string("staffranks:rank_color", "None")
+end)
