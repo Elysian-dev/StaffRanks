@@ -1,9 +1,9 @@
-# Staffranks -- By Salzar
+### Staffranks -- By Salzar
 
 This mod adds ranks, in chat and in nametag.
 
 
-# Base ranks
+# Base ranks
 
 All ranks can be found in ranks.lua.
 
