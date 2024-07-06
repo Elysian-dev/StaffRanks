@@ -2,7 +2,7 @@ staffranks = {}
 
 local ranks = {}
 
-function staffranks.register_role(name, prefix, color)
+function staffranks.register_rank(name, prefix, color)
 	ranks[name] = {name = name, prefix = prefix, color = color}
 end
 

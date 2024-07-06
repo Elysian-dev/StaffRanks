@@ -1,10 +1,15 @@
 dofile(minetest.get_modpath("staffranks") .. "/api.lua")
 dofile(minetest.get_modpath("staffranks") .. "/ranks.lua")
 
+minetest.register_privilege("ranks_gestion", {
+	description = "This privilege allows you to manage ranks",
+    give_to_singleplayer = true
+})
+
 minetest.register_chatcommand("add_rank", {
 	description = "Add a rank to player. If the rank name is 'clear', it resets the player's rank. See /ranks_list to view all available ranks.",
 	params = "<name> <rankname>",
-	privs = {},
+	privs = {ranks_gestion=true},
 	func = function(name, param)
 		local player_name, rankname = param:split(" ")[1], param:split(" ")[2]
 		local player = minetest.get_player_by_name(player_name)
@@ -51,7 +56,7 @@ minetest.register_chatcommand("add_rank", {
 
 minetest.register_chatcommand("ranks_list", {
 	description = "See the list of all ranks.",
-	privs = {},
+	privs = {ranks_gestion=true},
 	func = function(name, param)
 		minetest.chat_send_player(name, "List of all ranks: " .. staffranks.rankslist())
 	end,
@@ -60,7 +65,6 @@ minetest.register_chatcommand("ranks_list", {
 minetest.register_chatcommand("view_rank", {
 	description = "View a player's rank.",
 	params = "<name>",
-	privs = {},
 	func = function(name, param)
 		local player = minetest.get_player_by_name(param)
 		if player then

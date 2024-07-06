@@ -1,23 +1,23 @@
-staffranks.register_role("admin",
+staffranks.register_rank("admin",
                         "Administrator",
                         "#ba0000")
 
-staffranks.register_role("modo",
+staffranks.register_rank("modo",
                         "Moderator",
                         "#1a75ff")
 
-staffranks.register_role("dev",
+staffranks.register_rank("dev",
                         "Developer",
                         "#0099cc")
 
-staffranks.register_role("build",
+staffranks.register_rank("build",
                         "Builder",
                         "#ffad33")
 
-staffranks.register_role("cont",
+staffranks.register_rank("cont",
                         "Contributor",
                         "#a300cc")
 
-staffranks.register_role("vip",
+staffranks.register_rank("vip",
                         "VIP",
                         "#00e600")
