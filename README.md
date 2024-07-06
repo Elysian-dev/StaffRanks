@@ -1,4 +1,4 @@
-### Staffranks -- By Salzar
+# Staffranks -- By Salzar
 
 This mod adds ranks, in chat and in nametag.
 
