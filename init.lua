@@ -15,10 +15,11 @@ minetest.register_chatcommand("add_rank", {
 		local player = minetest.get_player_by_name(player_name)
 		if player then
 			local meta = player:get_meta()
-			local rank = meta:get_string("staffranks:rank")
+			local rank = meta:get_string("staffranks:rank_prefix")
 			if rankname == "clear" then
 				if rank ~= "None" then
 					meta:set_string("staffranks:rank", "None")
+					meta:set_string("staffranks:rank_prefix", "None")
 					meta:set_string("staffranks:rank_color", "None")
 					staffranks.clear_nametag(player)
 					minetest.chat_send_player(name,
@@ -34,8 +35,8 @@ minetest.register_chatcommand("add_rank", {
 					staffranks.add_rank(player_name, rankname)
 					staffranks.set_nametag(player, rankname)
 					minetest.chat_send_player(name,
-						minetest.colorize("#8dff23", "[StaffRanks] ") ..
-						minetest.colorize("#b7ff74", player_name .. "'s rank has been set to " .. rankname .. "."))
+					minetest.colorize("#8dff23", "[StaffRanks] ") ..
+					minetest.colorize("#b7ff74", player_name .. "'s rank has been set to " .. rank_prefix .. "."))
 				else
 					minetest.chat_send_player(name,
 						minetest.colorize("#FF0F0F", "[Error] ") ..
@@ -69,7 +70,7 @@ minetest.register_chatcommand("view_rank", {
 		local player = minetest.get_player_by_name(param)
 		if player then
 			local meta = player:get_meta()
-			local rank = meta:get_string("staffranks:rank")
+			local rank = meta:get_string("staffranks:rank_prefix")
 			if rank ~= "None" then
 				minetest.chat_send_player(name,
 								minetest.colorize("#8dff23", "[StaffRanks] ") ..
@@ -96,14 +97,13 @@ minetest.register_on_joinplayer(function(player)
 	local rankname = meta:get_string("staffranks:rank")
 	if rankname ~= "None" then
 		staffranks.set_nametag(player)
-		return true
 	end
 end)
 
 minetest.register_on_chat_message(function(name, message)
 	local player = minetest.get_player_by_name(name)
 	local meta = player:get_meta()
-	local rankname = meta:get_string("staffranks:rank")
+	local rankname = meta:get_string("staffranks:rank_prefix")
 	local rank_color = meta:get_string("staffranks:rank_color")
 	if rankname ~= "None" then
 			minetest.chat_send_all(minetest.colorize(rank_color, "[" .. rankname .. "] ") .. name .. " > " .. message)
@@ -114,5 +114,6 @@ end)
 minetest.register_on_newplayer(function(player)
 	local meta = player:get_meta()
 	meta:set_string("staffranks:rank", "None")
+	meta:set_string("staffranks:rank_prefix", "None")
 	meta:set_string("staffranks:rank_color", "None")
 end)

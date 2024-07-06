@@ -30,5 +30,6 @@ If you want to modify existing ranks or create new ones, simply use the staffran
 * `staffranks.rank_exist(rankname)` - Check that the rank exists.
 * `staffranks.add_rank(name, rankname)` - Adds a specific rank to a player.
 * `staffranks.set_nametag(player)` - Set a player's nametag.
-* `staffranks.clear_nametag` - Remove a player's nametag.
-* `staffranks.rankslist()` - Displays the list of ranks
+* `staffranks.clear_nametag(player)` - Remove a player's nametag.
+* `staffranks.rankslist()` - Displays the list of ranks.
+* `staffranks.has_rank(player_name, rankname)` - Checks whether a player has a specific rank.
