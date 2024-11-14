@@ -1,9 +1,9 @@
-### Staffranks -- By Salzar
+# Staffranks -- By Salzar
 
 This mod adds ranks, in chat and in nametag.
 
 
-# Base ranks
+## Base ranks
 
 All ranks can be found in ranks.lua.
 
@@ -14,17 +14,17 @@ All ranks can be found in ranks.lua.
 * Contributor
 * VIP
 
-# Commands
+## Commands
 
 * `/add_rank <name> <rankname>` - Add a rank to player. If the rank name is 'clear', it resets the player's rank.
 * `/ranks_list` - See the list of all ranks.
 * `/view_rank <name>` - View a player's rank.
 
-# Customization
+## Customization
 
 If you want to modify existing ranks or create new ones, simply use the staffranks.register_rank() function and add the rank name, prefix and color.
 
-# API
+## API
 
 * `staffranks.register_rank(name, prefix, color)` - Registers a rank, with its name, prefix and color.
 * `staffranks.rank_exist(rankname)` - Check that the rank exists.
