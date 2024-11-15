@@ -1,18 +1,22 @@
-dofile(minetest.get_modpath("staffranks") .. "/api.lua")
-dofile(minetest.get_modpath("staffranks") .. "/ranks.lua")
+local modname = core.get_current_modname()
+local modpath = core.get_modpath(modname)
+local S = core.get_translator(modname)
 
-minetest.register_privilege("ranks_gestion", {
-	description = "This privilege allows you to manage ranks",
+dofile(modpath .. "/api.lua")
+dofile(modpath .. "/ranks.lua")
+
+core.register_privilege("ranks_gestion", {
+    description = S("This privilege allows you to manage ranks"),
     give_to_singleplayer = true
 })
 
-minetest.register_chatcommand("add_rank", {
-	description = "Add a rank to player. If the rank name is 'clear', it resets the player's rank. See /ranks_list to view all available ranks.",
+core.register_chatcommand("add_rank", {
+	description = S("Add a rank to player@nIf the rank name is 'clear', it resets the player's rank.@n@n  See /ranks_list to view all available ranks."),
 	params = "<name> <rankname>",
-	privs = {ranks_gestion=true},
+	privs = {ranks_gestion = true},
 	func = function(name, param)
-		local player_name, rankname = param:split(" ")[1], param:split(" ")[2]
-		local player = minetest.get_player_by_name(player_name)
+		local pname, rankname = param:split(" ")[1], param:split(" ")[2]
+		local player = core.get_player_by_name(pname)
 		if player then
 			local meta = player:get_meta()
 			local rank = meta:get_string("staffranks:rank_prefix")
@@ -22,77 +26,77 @@ minetest.register_chatcommand("add_rank", {
 					meta:set_string("staffranks:rank_prefix", "None")
 					meta:set_string("staffranks:rank_color", "None")
 					staffranks.clear_nametag(player)
-					minetest.chat_send_player(name,
-						minetest.colorize("#8dff23", "[StaffRanks] ") ..
-						minetest.colorize("#b7ff74", player_name .. "'s rank has been reinisialised."))
+					core.chat_send_player(name,
+					    core.colorize("#8dff23", "[StaffRanks]") .." "..
+					    core.colorize("#b7ff74", S("@1's rank has been reinisialised.", pname)))
 				else
-					minetest.chat_send_player(name,
-						minetest.colorize("#FF0F0F", "[Error] ") ..
-						minetest.colorize("#FF4040", "The player " .. player_name .. " has no rank."))
+					core.chat_send_player(name,
+					    core.colorize("#FF0F0F", S("[Error]")) .." "..
+					    core.colorize("#FF4040", S("The player @1 has no rank.", pname)))
 				end
 			else
 				if staffranks.rank_exist(rankname) then
-					staffranks.add_rank(player_name, rankname)
+					staffranks.add_rank(pname, rankname)
 					staffranks.set_nametag(player, rankname)
-					minetest.chat_send_player(name,
-					minetest.colorize("#8dff23", "[StaffRanks] ") ..
-					minetest.colorize("#b7ff74", player_name .. "'s rank has been set to " .. rank_prefix .. "."))
+					core.chat_send_player(name,
+					    core.colorize("#8dff23", "[StaffRanks]") .." "..
+					    core.colorize("#b7ff74", S("@1's rank has been set to  @2.", pname, rankname)))
 				else
-					minetest.chat_send_player(name,
-						minetest.colorize("#FF0F0F", "[Error] ") ..
-						minetest.colorize("#FF4040", "The " .. rankname .. " rank does not exist."))
+					core.chat_send_player(name,
+					    core.colorize("#FF0F0F", S("[Error]")) .." "..
+					    core.colorize("#FF4040", S("The @1 rank does not exist.", pname)))
 				end
 			end
-		elseif not minetest.player_exists(player_name) then
-			minetest.chat_send_player(name,
-						minetest.colorize("#FF0F0F", "[Error] ") ..
-						minetest.colorize("#FF4040", "The player " .. player_name .. " doesn't exist."))
+		elseif not core.player_exists(pname) then
+			core.chat_send_player(name,
+			    core.colorize("#FF0F0F", S("[Error]")) .." "..
+			    core.colorize("#FF4040", "The player @1 doesn't exist.", pname))
 		elseif not player then
-			minetest.chat_send_player(name,
-						minetest.colorize("#FF0F0F", "[Error] ") ..
-						minetest.colorize("#FF4040", "The player " .. player_name .. " is not connected."))
+			core.chat_send_player(name,
+			    core.colorize("#FF0F0F", S("[Error]")) .." "..
+			    core.colorize("#FF4040", S("The player @1 is offline.", pname)))
 		end
 	end,
 })
 
-minetest.register_chatcommand("ranks_list", {
-	description = "See the list of all ranks.",
-	privs = {ranks_gestion=true},
+core.register_chatcommand("ranks_list", {
+	description = S("See the list of all ranks."),
+	privs = {ranks_gestion = true},
 	func = function(name, param)
-		minetest.chat_send_player(name, "List of all ranks: " .. staffranks.rankslist())
+		core.chat_send_player(name, S("List of all ranks: @1", staffranks.rankslist()))
 	end,
 })
 
-minetest.register_chatcommand("view_rank", {
-	description = "View a player's rank.",
+core.register_chatcommand("view_rank", {
+	description = S("View a player's rank."),
 	params = "<name>",
 	func = function(name, param)
-		local player = minetest.get_player_by_name(param)
+		local player = core.get_player_by_name(param)
 		if player then
 			local meta = player:get_meta()
 			local rank = meta:get_string("staffranks:rank_prefix")
 			if rank ~= "None" then
-				minetest.chat_send_player(name,
-								minetest.colorize("#8dff23", "[StaffRanks] ") ..
-								minetest.colorize("#b7ff74", "The player " .. param .. " has the rank " .. rank .. "."))
+				core.chat_send_player(name,
+				    core.colorize("#8dff23", "[StaffRanks]") .." "..
+				    core.colorize("#b7ff74", S("The player @1 has the rank @2.", param, rank)))
 			else
-				minetest.chat_send_player(name,
-								minetest.colorize("#8dff23", "[StaffRanks] ") ..
-								minetest.colorize("#b7ff74", "The player " .. param .. " has no rank."))
+				core.chat_send_player(name,
+				    core.colorize("#8dff23", "[StaffRanks]") .." "..
+                    core.colorize("#b7ff74", S("The player @1  has no rank.", param)))
 			end
-		elseif not minetest.player_exists(param) then
-			minetest.chat_send_player(name,
-						minetest.colorize("#FF0F0F", "[Error] ") ..
-						minetest.colorize("#FF4040", "The player " .. param .. " doesn't exist."))
+		elseif not core.player_exists(param) then
+			core.chat_send_player(name,
+			    core.colorize("#FF0F0F", S("[Error]")) .." "..
+			    core.colorize("#FF4040", "The player @1 doesn't exist.", param))
 		elseif not player then
-			minetest.chat_send_player(name,
-						minetest.colorize("#FF0F0F", "[Error] ") ..
-						minetest.colorize("#FF4040", "The player " .. param .. " is not connected."))
+			core.chat_send_player(name,
+			    core.colorize("#FF0F0F", S("[Error]")) .." "..
+			    core.colorize("#FF4040", S("The player @1 is offline.", param)))
 		end
 	end,
 })
 
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	local meta = player:get_meta()
 	local rankname = meta:get_string("staffranks:rank")
 	if rankname ~= "None" then
@@ -100,18 +104,19 @@ minetest.register_on_joinplayer(function(player)
 	end
 end)
 
-minetest.register_on_chat_message(function(name, message)
-	local player = minetest.get_player_by_name(name)
+core.register_on_chat_message(function(name, message)
+	local player = core.get_player_by_name(name)
 	local meta = player:get_meta()
 	local rankname = meta:get_string("staffranks:rank_prefix")
 	local rank_color = meta:get_string("staffranks:rank_color")
 	if rankname ~= "None" then
-			minetest.chat_send_all(minetest.colorize(rank_color, "[" .. rankname .. "] ") .. name .. " > " .. message)
-			return true
+        local format_rank = core.colorize(rank_color, S("[@1] ", rankname))
+		core.chat_send_all(format_rank .." ".. core.format_chat_message(name, message))
+		return true
 	end
 end)
 
-minetest.register_on_newplayer(function(player)
+core.register_on_newplayer(function(player)
 	local meta = player:get_meta()
 	meta:set_string("staffranks:rank", "None")
 	meta:set_string("staffranks:rank_prefix", "None")
