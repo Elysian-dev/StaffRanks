@@ -1,0 +1,21 @@
+# textdomain: staffranks
+This privilege allows you to manage ranks=
+Add a rank to player.=
+@@If the rank name is 'clear' it resets the player's rank.=
+@@See /ranks_list to view all available ranks.=
+@1's rank has been reinisialised.=
+The player @1 has no rank.=
+@1's rank has been set to @2.=
+The @1 rank does not exist.=
+The player @1 doesn't exist.=
+The player @1 is not connected.=
+See the list of all ranks.=
+List of all ranks: @1=
+View a player's rank.=
+The player @1 has the rank @2.=
+Administrator=
+Moderator=
+Developer=
+Builder=
+Contributor=
+VIP=

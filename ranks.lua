@@ -1,23 +1,25 @@
+local S = core.get_translator(core.get_current_modname())
+
 staffranks.register_rank("admin",
-                        "Administrator",
+                        S("Administrator"),
                         "#ba0000")
 
 staffranks.register_rank("modo",
-                        "Moderator",
+                        S("Moderator"),
                         "#1a75ff")
 
 staffranks.register_rank("dev",
-                        "Developer",
+                        S("Developer"),
                         "#0099cc")
 
 staffranks.register_rank("build",
-                        "Builder",
+                        S("Builder"),
                         "#ffad33")
 
 staffranks.register_rank("cont",
-                        "Contributor",
+                        S("Contributor"),
                         "#a300cc")
 
 staffranks.register_rank("vip",
-                        "VIP",
+                        S("VIP"),
                         "#00e600")

@@ -1,0 +1,21 @@
+# textdomain: staffranks
+This privilege allows you to manage ranks=Este privilegio te permite gestionar rangos.
+Add a rank to player.=Añadir un rango a un jugador.
+@@If the rank name is 'clear' it resets the player's rank.=@@Si el nombre del rango es 'clear', se restablece el rango del jugador.
+@@See /ranks_list to view all available ranks.=@@Usa /ranks_list para ver todos los rangos disponibles.
+@1's rank has been reinisialised.=El rango de @1 ha sido restablecido.
+The player @1 has no rank.=El jugador @1 no tiene rango.
+@1's rank has been set to @2.=El rango de @1 se ha establecido en @2.
+The @1 rank does not exist.=El rango @1 no existe.
+The player @1 doesn't exist.=El jugador @1 no existe.
+The player @1 is not connected.=El jugador @1 no está conectado.
+See the list of all ranks.=Ver la lista de todos los rangos disponibles.
+List of all ranks: @1=Lista de todos los rangos disponibles: @1
+View a player's rank.=Ver el rango de un jugador.
+The player @1 has the rank @2.=El jugador @1 tiene el rango @2.
+Administrator=Administrador
+Moderator=Moderador
+Developer=Desarrollador
+Builder=Constructor
+Contributor=Colaborador
+VIP=VIP
