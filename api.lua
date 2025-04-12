@@ -11,7 +11,7 @@ function staffranks.rank_exist(rankname)
 end
 
 function staffranks.add_rank(name, rankname)
-    local player = minetest.get_player_by_name(name)
+    local player = core.get_player_by_name(name)
 	local meta = player:get_meta()
     for _, rankData in pairs(ranks) do
         if rankname == rankData.name then
@@ -31,7 +31,7 @@ function staffranks.set_nametag(player)
     local meta = player:get_meta()
     local rank_color = meta:get_string("staffranks:rank_color")
     local rank_name = meta:get_string("staffranks:rank_prefix")
-    player:set_nametag_attributes({text = minetest.colorize(rank_color, "[" .. rank_name .. "] ") .. name})
+    player:set_nametag_attributes({text = core.colorize(rank_color, "[" .. rank_name .. "] ") .. name})
 end
 
 function staffranks.clear_nametag(player)
@@ -54,7 +54,7 @@ function staffranks.rankslist()
 end
 
 function staffranks.has_rank(player_name, rankname)
-    local player = minetest.get_player_by_name(player_name)
+    local player = core.get_player_by_name(player_name)
 	local meta = player:get_meta()
 	local rank = meta:get_string("staffranks:rank")
     if rank == rankname then
