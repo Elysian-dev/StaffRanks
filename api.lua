@@ -26,7 +26,7 @@ function staffranks.add_rank(name, rankname)
     end
 end
 
-function staffranks.set_nametag(player)
+function staffranks.init_nametag(player)
     local name = player:get_player_name()
     local meta = player:get_meta()
     local rank_color = meta:get_string("staffranks:rank_color")
@@ -61,4 +61,18 @@ function staffranks.has_rank(player_name, rankname)
         return true
     end
     return false
+end
+
+function staffranks.log(level, message)
+    local worldpath = core.get_worldpath()
+    local file = io.open(worldpath .. "/staffranks.log", "a")
+    local time = os.date("%Y-%m-%d %H:%M:%S")
+    local message = message:gsub("T@staffranks%)", ""):gsub("^%s+", ""):gsub("%s+$", ""):gsub("\27%[[^m]*m", ""):gsub("\27.", "")
+    if level == "message" then
+        file:write(time .. " [MESSAGE] " .. message .. "\n")
+    elseif level == "info" then
+        file:write(time .. " [INFO] " .. message .. "\n")
+        core.log("info", "[StaffRanks] " .. message)
+    end
+    file:close()
 end
