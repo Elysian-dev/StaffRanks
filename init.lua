@@ -86,7 +86,7 @@ local function view_rank_cmd(name, player_name)
 	end
 end
 
-if minetest.get_modpath("lib_chatcmdbuilder") then
+if core.get_modpath("lib_chatcmdbuilder") then
 	local cmd = chatcmdbuilder.register("ranks", {
 		description = S("Add, clear, view or list all ranks of players."),
 		params = "<add | clear | view | list> [<" .. S("player") .. ">]",
