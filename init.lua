@@ -114,7 +114,18 @@ else
 		params = "<name> <rankname>",
 		privs = {ranks_gestion=true},
 		func = function(name, param)
-			local player_name, rankname = param:split(" ")[1], param:split(" ")[2]
+			if param == "" then
+				return false, "Invalid parameters (see /help add_rank)."
+			end
+
+			local parts = param:split(" ")
+			local player_name = parts[1]
+			local rankname = parts[2]
+
+			if not player_name or not rankname then
+				return false, "Invalid parameters (see /help add_rank)."
+			end
+
 			if rankname == "clear" then
 				clear_rank_cmd(name, player_name)
 			else
@@ -135,6 +146,10 @@ else
 		description = S("View a player's rank."),
 		params = "<name>",
 		func = function(name, param)
+			if param == "" then
+				return false, "Invalid parameters (see /help add_rank)."
+			end
+
 			view_rank_cmd(name, param)
 		end,
 	})
