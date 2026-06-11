@@ -115,6 +115,15 @@ else
 		privs = {ranks_gestion=true},
 		func = function(name, param)
 			local player_name, rankname = param:split(" ")[1], param:split(" ")[2]
+			if not player_name then
+				return core.chat_send_player(name,
+					core.colorize("#FF0F0F", S("[Error] ")) ..
+					core.colorize("#FF4040", S("Please specify a player name.")))
+			elseif not rankname then
+				return core.chat_send_player(name,
+					core.colorize("#FF0F0F", S("[Error] ")) ..
+					core.colorize("#FF4040", S("Please specify a rank name.")))
+			end
 			if rankname == "clear" then
 				clear_rank_cmd(name, player_name)
 			else
@@ -135,6 +144,11 @@ else
 		description = S("View a player's rank."),
 		params = "<name>",
 		func = function(name, param)
+			if not param then
+				return core.chat_send_player(name,
+					core.colorize("#FF0F0F", S("[Error] ")) ..
+					core.colorize("#FF4040", S("Please specify a player name.")))
+			end
 			view_rank_cmd(name, param)
 		end,
 	})
